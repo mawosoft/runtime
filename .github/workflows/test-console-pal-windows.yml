@@ -15,7 +15,7 @@ jobs:
     - name: build runtime
       run: |
         .\build.cmd -c Release -subset clr+libs+libs.tests
-    - name: build TestConsolePalWindows3
-      run: .\.dotnet\dotnet.exe build .\TestConsolePalWindows3\TestConsolePalWindows3.csproj -c Release
-    - name: run TestConsolePal3
-      run: .\artifacts\bin\testhost\net9.0-windows-Release-x64\shared\Microsoft.NETCore.App\9.0.0\corerun.exe .\TestConsolePalWindows3\bin\Release\net8.0-windows\TestConsolePalWindows3.dll
+    - name: Build and run TestConsolePalWindows3
+      shell: pwsh
+      run: |
+        .\.dotnet\dotnet.exe run --project .\TestConsolePalWindows3\TestConsolePalWindows3.csproj -c Release .\artifacts\bin\testhost\net9.0-windows-Release-x64\shared\Microsoft.NETCore.App\9.0.0\corerun.exe .\TestConsolePalWindows3\bin\Release\net8.0-windows\TestConsolePalWindows3.dll

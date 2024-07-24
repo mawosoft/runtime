@@ -2,6 +2,7 @@
 
 using System;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 
@@ -76,20 +77,33 @@ internal sealed partial class Program
     [LibraryImport("user32.dll", SetLastError = true)]
     public static partial int SendInput(int cInputs, ReadOnlySpan<INPUT> pInputs, int cbSize);
 
-
-    internal static void Main()
+    internal static void Main(string[] args)
     {
-        // Allocate a new console to allow simulating console input on CI runner, but keep output redirections.
-        // This must be done **before** calling the Console API because System.Console only checks redirection during init.
-        IntPtr hout = GetStdHandle(STD_OUTPUT_HANDLE);
-        IntPtr herr = GetStdHandle(STD_ERROR_HANDLE);
-        bool bfree = FreeConsole();
-        bool balloc = AllocConsole();
-        SetStdHandle(STD_OUTPUT_HANDLE, hout);
-        SetStdHandle(STD_ERROR_HANDLE, herr);
+        if (args.Length == 2)
+        {
+            Console.WriteLine($"Redirected in/out/err: {Console.IsInputRedirected}/{Console.IsOutputRedirected}/{Console.IsErrorRedirected}");
+            // Allocate a new console to allow simulating console input on CI runner, but keep output redirections.
+            IntPtr hout = GetStdHandle(STD_OUTPUT_HANDLE);
+            IntPtr herr = GetStdHandle(STD_ERROR_HANDLE);
+            bool bfree = FreeConsole();
+            bool balloc = AllocConsole();
+            SetStdHandle(STD_OUTPUT_HANDLE, hout);
+            SetStdHandle(STD_ERROR_HANDLE, herr);
+            Console.WriteLine($"Free/AllocConsole: {bfree} {balloc}");
+            Console.WriteLine($"Starting client...");
+            using Process p = new();
+            p.StartInfo.UseShellExecute = false;
+            //p.StartInfo.CreateNoWindow = true;
+            p.StartInfo.FileName = args[0];
+            p.StartInfo.ArgumentList.Add(args[1]);
+            p.Start();
+            p.WaitForExit();
+            return;
+        }
+
+        // Client mode
 
         Console.WriteLine($"Redirected in/out/err: {Console.IsInputRedirected}/{Console.IsOutputRedirected}/{Console.IsErrorRedirected}");
-        Console.WriteLine($"Free/AllocConsole: {bfree} {balloc}");
 
         // Send console input
         INPUT[] inputs = new INPUT[4];
