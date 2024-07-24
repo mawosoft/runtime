@@ -1,5 +1,7 @@
 on:
   workflow_dispatch:
+  push:
+    branches: test-console-pal-windows
 
 jobs:
   job1:
