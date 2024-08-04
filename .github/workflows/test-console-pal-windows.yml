@@ -1,7 +1,7 @@
 on:
   workflow_dispatch:
   push:
-    branches: test-consolpa4
+    branches: test-consolpal4
 
 jobs:
   job1:
