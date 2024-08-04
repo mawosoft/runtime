@@ -94,24 +94,21 @@ internal sealed partial class Program
         // Send console input
         INPUT[] inputs = new INPUT[4];
         inputs[0].type = INPUT_KEYBOARD;
-        // Alt keydown
-        inputs[0].union.keyboardInput.wVk = 0x12;
-        inputs[0].union.keyboardInput.wScan = 0x38;
+        // ctrl    keydown
+        inputs[0].union.keyboardInput.wVk = 0x11;
+        inputs[0].union.keyboardInput.wScan = 0x1d;
         inputs[0].union.keyboardInput.dwFlags = 0;
-        // Numpad1 keydown
         inputs[1].type = INPUT_KEYBOARD;
-        inputs[1].union.keyboardInput.wVk = (ushort)ConsoleKey.NumPad1;
-        inputs[1].union.keyboardInput.wScan = 0x4f;
+        inputs[1].union.keyboardInput.wVk = (ushort)ConsoleKey.V;
+        inputs[1].union.keyboardInput.wScan = 0x2f;
         inputs[1].union.keyboardInput.dwFlags = 0;
-        // Numpad1 keyup
         inputs[2].type = INPUT_KEYBOARD;
-        inputs[2].union.keyboardInput.wVk = (ushort)ConsoleKey.NumPad1;
-        inputs[2].union.keyboardInput.wScan = 0x4f;
+        inputs[2].union.keyboardInput.wVk = (ushort)ConsoleKey.V;
+        inputs[2].union.keyboardInput.wScan = 0x2f;
         inputs[2].union.keyboardInput.dwFlags = KEYEVENTF_KEYUP;
-        // Alt keyup
         inputs[3].type = INPUT_KEYBOARD;
-        inputs[3].union.keyboardInput.wVk = 0x12; // Alt
-        inputs[3].union.keyboardInput.wScan = 0x38;
+        inputs[3].union.keyboardInput.wVk = 0x11; 
+        inputs[3].union.keyboardInput.wScan = 0x1d;
         inputs[3].union.keyboardInput.dwFlags = KEYEVENTF_KEYUP;
         // Unless there is a arguments error, SendInput always returns success.
         // Need to always check the last PInvoke error.
